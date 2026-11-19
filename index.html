@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chalbi — Travel that delivers care</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   CHALBI × AIRBNB SYSTEM
+   ============================================================ */
+:root{
+  --red:#ff385c;
+  --red-grad:linear-gradient(90deg,#E61E4D 0%,#E31C5F 50%,#D70466 100%);
+  --ink:#222222;
+  --muted:#717171;
+  --muted-2:#b0b0b0;
+  --line:#dddddd;
+  --line-soft:#ebebeb;
+  --soft:#f7f7f7;
+  --white:#ffffff;
+  --r-card:12px;
+  --r-lg:16px;
+  --r-pill:999px;
+  --shadow-card:0 6px 16px rgba(0,0,0,.12);
+  --shadow-search:0 3px 12px rgba(0,0,0,.10);
+  --shadow-search-hover:0 3px 14px rgba(0,0,0,.16);
+  --shadow-pill:0 1px 2px rgba(0,0,0,.08);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:#fff;color:var(--ink);
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  font-size:14px;line-height:1.45;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+  padding-bottom:84px; /* fixed demo bars */
+}
+h1,h2,h3,h4,h5,p{margin:0}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit}
+svg{display:block}
+.wrap{max-width:1280px;margin:0 auto;padding:0 24px}
+.section{padding:48px 0}
+
+/* icons */
+.ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+.ic-fill{fill:currentColor;stroke:none}
+.ic-sm{width:14px;height:14px}
+.ic-lg{width:24px;height:24px}
+
+/* buttons */
+.btn-red{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  background:var(--red-grad);color:#fff;border:0;border-radius:8px;
+  padding:13px 24px;font-size:15px;font-weight:600;cursor:pointer;
+  transition:transform .15s,box-shadow .15s,filter .15s;
+}
+.btn-red:hover{filter:brightness(1.05);box-shadow:0 6px 18px rgba(255,56,92,.35)}
+.btn-light{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  background:#fff;color:var(--ink);border:0;border-radius:8px;
+  padding:13px 22px;font-size:15px;font-weight:600;cursor:pointer;
+  transition:transform .15s,box-shadow .15s;
+}
+.btn-light:hover{transform:scale(1.02);box-shadow:0 6px 18px rgba(0,0,0,.18)}
+.btn-ghost{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  background:#fff;color:var(--ink);border:1px solid var(--ink);border-radius:8px;
+  padding:12px 20px;font-size:14px;font-weight:600;cursor:pointer;
+  transition:background .15s;
+}
+.btn-ghost:hover{background:var(--soft)}
+.link-red{color:var(--red);font-weight:600}
+.link-red:hover{text-decoration:underline}
+
+/* ============================================================
+   SCREENS
+   ============================================================ */
+.screen{display:none}
+.screen.is-active{display:block}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.site-header{
+  position:sticky;top:0;z-index:100;background:#fff;
+  border-bottom:1px solid var(--line-soft);
+}
+.header-bar{
+  max-width:1280px;margin:0 auto;padding:0 24px;min-height:72px;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+}
+.logo{display:flex;align-items:center;gap:9px;flex:0 0 auto}
+.logo-mark{width:30px;height:30px}
+.logo-name{display:block;font-size:20px;font-weight:700;letter-spacing:-.03em;line-height:1.05;color:var(--red)}
+.logo-tag{display:block;font-size:10px;font-weight:500;color:var(--muted);margin-top:1px;letter-spacing:.005em}
+
+.main-nav{display:flex;align-items:center;gap:4px}
+.main-nav a{padding:10px 16px;border-radius:var(--r-pill);font-size:14px;font-weight:500;color:var(--muted);transition:background .15s,color .15s}
+.main-nav a:hover{background:var(--soft);color:var(--ink)}
+.main-nav a.is-active{color:var(--ink);font-weight:600}
+
+.header-right{display:flex;align-items:center;gap:6px}
+.host-link{font-size:14px;font-weight:500;padding:10px 14px;border-radius:var(--r-pill);white-space:nowrap}
+.host-link:hover{background:var(--soft)}
+.icon-round{width:40px;height:40px;border:0;border-radius:50%;background:none;display:grid;place-items:center;cursor:pointer;color:var(--ink)}
+.icon-round:hover{background:var(--soft)}
+.signin{font-size:14px;font-weight:600;padding:10px 14px;border-radius:var(--r-pill);white-space:nowrap}
+.signin:hover{background:var(--soft)}
+.profile-pill{
+  display:flex;align-items:center;gap:10px;border:1px solid var(--line);background:#fff;
+  border-radius:var(--r-pill);padding:5px 5px 5px 12px;cursor:pointer;box-shadow:var(--shadow-pill);
+  transition:box-shadow .15s;
+}
+.profile-pill:hover{box-shadow:0 2px 6px rgba(0,0,0,.16)}
+.avatar{width:30px;height:30px;border-radius:50%;background:#717171;color:#fff;display:grid;place-items:center}
+
+/* Search bar */
+.search-row{display:flex;justify-content:center;padding:4px 24px 16px}
+.searchbar{
+  display:flex;align-items:center;width:100%;max-width:860px;
+  background:#fff;border:1px solid var(--line);border-radius:var(--r-pill);
+  box-shadow:var(--shadow-search);height:66px;padding-left:8px;
+  transition:max-width .25s ease,height .25s ease,padding .25s ease;
+}
+.searchbar:hover{box-shadow:var(--shadow-search-hover)}
+.search-seg{
+  flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:2px;
+  height:52px;padding:0 24px;border:0;background:none;border-radius:var(--r-pill);
+  text-align:left;cursor:pointer;position:relative;transition:background .15s;
+}
+.search-seg:hover{background:#ebebeb}
+.search-seg + .search-seg::before{
+  content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);
+  width:1px;height:32px;background:var(--line);
+}
+.search-seg:hover::before,
+.search-seg:hover + .search-seg::before{opacity:0}
+.search-lbl{font-size:12px;font-weight:600;color:var(--ink);line-height:1}
+.search-val{font-size:14px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.search-orb{
+  flex:0 0 auto;width:48px;height:48px;margin-right:8px;border:0;border-radius:50%;
+  background:var(--red);color:#fff;display:grid;place-items:center;cursor:pointer;
+  transition:background .15s,transform .15s;
+}
+.search-orb:hover{background:#e31c5f;transform:scale(1.04)}
+
+.site-header.is-compact .header-bar{min-height:64px}
+.site-header.is-compact .search-row{padding:2px 24px 10px}
+.site-header.is-compact .searchbar{max-width:560px;height:48px}
+.site-header.is-compact .search-seg{height:40px;padding:0 14px;flex-direction:row;align-items:center;justify-content:center;gap:6px}
+.site-header.is-compact .search-lbl{display:none}
+.site-header.is-compact .search-val{font-size:13px;font-weight:500;color:var(--ink)}
+.site-header.is-compact .search-orb{width:36px;height:36px;margin-right:6px}
+.site-header.is-compact .search-orb .ic{width:16px;height:16px}
+
+/* Category pills */
+.category-strip{background:#fff;border-bottom:1px solid var(--line-soft)}
+.cat-track{
+  display:flex;gap:6px;overflow-x:auto;padding:14px 24px 10px;
+  max-width:1280px;margin:0 auto;scrollbar-width:none;
+}
+.cat-track::-webkit-scrollbar{display:none}
+.cat{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  padding:4px 8px 10px;border:0;background:none;cursor:pointer;
+  color:var(--muted);font-size:12px;font-weight:500;white-space:nowrap;
+  border-bottom:2px solid transparent;
+  transition:color .15s,border-color .15s;
+}
+.cat:hover{color:var(--ink)}
+.cat.is-active{color:var(--ink);font-weight:600;border-bottom-color:var(--ink)}
+.cat .ic{width:22px;height:22px}
+
+body[data-screen="invoice"] .search-row,
+body[data-screen="invoice"] .category-strip{display:none}
+
+/* ============================================================
+   REAL IMAGES (Chalbi Desert Theme)
+   ============================================================ */
+.photo {
+  background-color: #e9e9e9;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.photo.v1{background-image:url('images/desert-heart.jpg')}
+.photo.v2{background-image:url('images/camel-ride.jpg')}
+.photo.v3{background-image:url('images/quad-bike.jpg')}
+.photo.v4{background-image:url('images/lake-sunset.jpg')}
+.photo.v5{background-image:url('images/maasai-horn.jpg')}
+.photo.v6{background-image:url('images/maasai-circle.jpg')}
+.photo.v7{background-image:url('images/fisherman.jpg')}
+.photo.v8{background-image:url('images/lake-children.jpg')}
+.photo.v9{background-image:url('images/coffee-sheep.jpg')}
+.photo.v10{background-image:url('images/safari-jeep.jpg')}
+.photo.v11{background-image:url('images/safari-mud.jpg')}
+.photo.v12{background-image:url('images/safari-sunset.jpg')}
+.photo.v13{background-image:url('images/safari-roof.jpg')}
+.photo.v14{background-image:url('images/dune-sitting.jpg')}
+.photo.v15{background-image:url('images/salt-pan-group.jpg')}
+.photo.v16{background-image:url('images/goat-selfie.jpg')}
+.photo.v17{background-image:url('images/safari-truck-dust.jpg')}
+.photo.v18{background-image:url('images/wooden-boat.jpg')}
+.photo.v19{background-image:url('images/safari-camp-tents.jpg')}
+.photo.v20{background-image:url('images/safari-dining.jpg')}
+.photo.v21{background-image:url('images/safari-tent-red.jpg')}
+.photo.v22{background-image:url('images/safari-lounge.jpg')}
+.photo.v23{background-image:url('images/safari-camp-chairs.jpg')}
+.photo.v24{background-image:url('images/food-pot.jpg')}
+.photo.v25{background-image:url('images/food-cooking.jpg')}
+
+.hero-photo {
+  background-image: url('images/desert-heart.jpg');
+  background-color: #e9e9e9;
+  background-size: cover;
+  background-position: center;
+}
+
+/* ============================================================
+   LANDING
+   ============================================================ */
+.hero{
+  position:relative;margin-top:24px;border-radius:24px;overflow:hidden;
+  min-height:480px;display:flex;align-items:flex-end;background:#e6e6e6;
+}
+.hero-media{position:absolute;inset:0}
+.hero-scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.02) 25%,rgba(0,0,0,.62) 100%)}
+.hero-content{position:relative;z-index:2;padding:44px;max-width:760px;color:#fff}
+.hero-kicker{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;opacity:.92}
+.hero h1{
+  font-size:clamp(30px,4.6vw,54px);font-weight:700;line-height:1.05;
+  letter-spacing:-.035em;margin:12px 0 14px;color:#fff;
+}
+.hero p{font-size:16px;line-height:1.55;max-width:52ch;opacity:.95}
+.hero .btn-light{margin-top:24px}
+
+.section-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:20px}
+.section-head h2{font-size:22px;font-weight:600;letter-spacing:-.015em}
+.section-head .link-red{font-size:14px;white-space:nowrap}
+
+.dest-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.dest-card{display:block;transition:transform .18s}
+.dest-card:hover{transform:translateY(-2px)}
+.dest-media{
+  position:relative;border-radius:var(--r-card);overflow:hidden;
+  aspect-ratio:1/1;background:#eee;transition:box-shadow .18s;
+}
+.dest-card:hover .dest-media{box-shadow:var(--shadow-card)}
+.dest-media .photo{position:absolute;inset:0}
+.badge-red{
+  position:absolute;top:12px;left:12px;z-index:2;
+  background:var(--red);color:#fff;font-size:12px;font-weight:600;
+  padding:5px 10px;border-radius:6px;letter-spacing:.01em;
+}
+.dest-card h3{font-size:15px;font-weight:600;margin-top:10px;letter-spacing:-.01em}
+.dest-card p{font-size:14px;color:var(--muted);margin-top:1px}
+.dest-card.is-muted{opacity:.5}
+.dest-card.is-muted .photo{filter:grayscale(1)}
+.dest-card.is-muted:hover{transform:none}
+
+/* impact banner */
+.impact-banner{
+  display:flex;align-items:flex-start;gap:20px;
+  background:var(--soft);border-radius:var(--r-lg);padding:28px 30px;
+}
+.impact-icon{
+  flex:0 0 auto;width:48px;height:48px;border-radius:50%;
+  background:#fff;color:var(--red);display:grid;place-items:center;
+  box-shadow:var(--shadow-pill);
+}
+.impact-banner h3{font-size:19px;font-weight:600;letter-spacing:-.015em;line-height:1.35}
+.impact-banner p{font-size:14px;color:var(--muted);margin-top:6px;max-width:66ch}
+
+/* ============================================================
+   MARSABIT DESTINATION
+   ============================================================ */
+.crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:13px;color:var(--muted);margin:24px 0 16px}
+.crumbs a:hover{text-decoration:underline}
+.crumbs .sep{color:var(--muted-2)}
+
+.dest-hero{
+  position:relative;border-radius:24px;overflow:hidden;min-height:360px;
+  display:flex;align-items:flex-end;background:#e6e6e6;
+}
+.dest-hero .hero-scrim{background:linear-gradient(180deg,rgba(0,0,0,0) 30%,rgba(0,0,0,.6) 100%)}
+.dest-hero-content{position:relative;z-index:2;padding:36px 40px;color:#fff}
+.dest-hero-content h1{font-size:clamp(30px,4.4vw,48px);font-weight:700;letter-spacing:-.035em;color:#fff;line-height:1.05}
+.dest-hero-content p{font-size:15px;opacity:.92;margin-top:6px}
+
+.writeup{
+  margin-top:28px;border:1px solid var(--line-soft);border-radius:var(--r-lg);
+  padding:26px 28px;background:#fff;
+}
+.writeup .eyebrow{
+  display:block;font-size:12px;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:10px;
+}
+.writeup p{color:var(--muted);font-size:15px;font-style:italic}
+
+.county-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.county-card{
+  display:flex;flex-direction:column;background:#fff;border:1px solid var(--line-soft);
+  border-radius:var(--r-lg);overflow:hidden;
+  transition:box-shadow .18s,transform .18s;
+}
+.county-card:hover{box-shadow:var(--shadow-card);transform:translateY(-2px)}
+.county-media{position:relative;aspect-ratio:16/10}
+.county-media .photo{position:absolute;inset:0}
+.county-icon{
+  position:absolute;left:12px;bottom:12px;width:38px;height:38px;border-radius:10px;
+  background:#fff;color:var(--ink);display:grid;place-items:center;
+  box-shadow:var(--shadow-pill);z-index:2;
+}
+.county-body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:2px}
+.county-body h3{font-size:16px;font-weight:600;letter-spacing:-.01em}
+.county-body p{font-size:13.5px;color:var(--muted)}
+.county-btn{
+  align-self:flex-start;margin-top:14px;
+  border:1px solid var(--ink);border-radius:8px;
+  padding:7px 12px;font-size:13px;font-weight:600;background:#fff;
+  transition:background .15s;
+}
+.county-card:hover .county-btn{background:var(--soft)}
+
+.impact-mini{
+  display:flex;gap:16px;align-items:flex-start;margin-top:32px;
+  background:#fff8f9;border:1px solid #ffd9df;border-radius:var(--r-lg);
+  padding:22px 24px;
+}
+.impact-mini .impact-icon{width:40px;height:40px;background:#fff;box-shadow:none;border:1px solid #ffd9df}
+.impact-mini h4{font-size:15px;font-weight:600}
+.impact-mini p{font-size:13.5px;color:var(--muted);margin-top:3px;max-width:70ch}
+
+/* ============================================================
+   PROPERTY LIST
+   ============================================================ */
+.list-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin:28px 0 22px}
+.list-head h1{font-size:26px;font-weight:600;letter-spacing:-.02em}
+.list-head p{font-size:14px;color:var(--muted);margin-top:4px}
+
+.list-layout{display:grid;grid-template-columns:280px 1fr;gap:32px;align-items:start}
+
+.filters{
+  border:1px solid var(--line-soft);border-radius:var(--r-lg);
+  padding:20px 20px 8px;background:#fff;
+}
+.filter-group{padding-bottom:18px;margin-bottom:18px;border-bottom:1px solid var(--line-soft)}
+.filter-group:last-child{border-bottom:0;margin-bottom:0}
+.filter-group h4{font-size:14px;font-weight:600;margin-bottom:10px}
+.check{display:flex;align-items:center;gap:10px;padding:5px 0;font-size:14px;color:var(--ink);cursor:pointer}
+.check input{width:18px;height:18px;accent-color:var(--red);cursor:pointer;flex:0 0 auto;margin:0}
+
+.results-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px 20px}
+
+/* ---------- listing card ---------- */
+.listing{cursor:pointer;min-width:0}
+.listing-media{
+  position:relative;border-radius:var(--r-card);overflow:hidden;
+  aspect-ratio:1/1;background:#eee;
+}
+.carousel{
+  display:flex;height:100%;overflow-x:auto;scroll-snap-type:x mandatory;
+  scrollbar-width:none;overscroll-behavior-x:contain;
+}
+.carousel::-webkit-scrollbar{display:none}
+.carousel .photo{flex:0 0 100%;height:100%;scroll-snap-align:start}
+
+.guest-badge{
+  position:absolute;top:12px;left:12px;z-index:5;
+  background:#fff;color:var(--ink);font-size:12px;font-weight:600;
+  padding:5px 10px;border-radius:var(--r-pill);box-shadow:0 1px 4px rgba(0,0,0,.16);
+}
+.heart-btn{
+  position:absolute;top:10px;right:10px;z-index:5;
+  width:34px;height:34px;border:0;border-radius:50%;
+  background:rgba(0,0,0,.34);color:#fff;display:grid;place-items:center;
+  cursor:pointer;transition:transform .15s,background .15s;
+  -webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);
+}
+.heart-btn:hover{transform:scale(1.08);background:rgba(0,0,0,.45)}
+.heart-btn .ic{width:18px;height:18px;stroke-width:2}
+.heart-btn.is-saved .ic{fill:var(--red);stroke:var(--red)}
+.heart-btn.is-saved{color:var(--red)}
+
+.car-arrow{
+  position:absolute;top:50%;transform:translateY(-50%);z-index:5;
+  width:30px;height:30px;border:0;border-radius:50%;
+  background:rgba(255,255,255,.92);color:var(--ink);
+  display:grid;place-items:center;cursor:pointer;
+  box-shadow:0 1px 4px rgba(0,0,0,.2);
+  opacity:0;transition:opacity .15s,transform .15s;
+}
+.car-arrow:hover{transform:translateY(-50%) scale(1.08)}
+.car-arrow.prev{left:10px}
+.car-arrow.next{right:10px}
+.listing-media:hover .car-arrow{opacity:1}
+
+.dots{position:absolute;left:0;right:0;bottom:10px;z-index:5;display:flex;justify-content:center;gap:5px}
+.dot{
+  width:6px;height:6px;padding:0;border:0;border-radius:50%;
+  background:rgba(255,255,255,.65);cursor:pointer;
+  box-shadow:0 1px 2px rgba(0,0,0,.25);
+  transition:background .15s,transform .15s;
+}
+.dot.is-active{background:#fff;transform:scale(1.15)}
+
+.listing-info{padding:10px 2px 0}
+.listing-title-row{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.listing-title{font-size:15px;font-weight:600;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.listing-rating{font-size:13px;display:flex;align-items:center;gap:3px;flex:0 0 auto}
+.listing-rating .ic{width:12px;height:12px}
+.listing-loc{font-size:14px;color:var(--muted);margin-top:1px}
+.listing-meta{font-size:14px;color:var(--muted)}
+.badge-care{
+  display:inline-flex;align-items:center;gap:5px;margin-top:7px;
+  background:var(--soft);color:var(--muted);border-radius:var(--r-pill);
+  padding:4px 9px;font-size:11.5px;font-weight:600;
+}
+.badge-care .ic{width:12px;height:12px;color:var(--red);fill:var(--red);stroke:none}
+.listing-foot{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-top:8px}
+.price{font-size:15px;line-height:1.25}
+.price strong{font-weight:600}
+.price span{color:var(--muted);font-size:14px}
+.btn-book{
+  background:var(--red-grad);color:#fff;border:0;border-radius:8px;
+  padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;
+  white-space:nowrap;transition:filter .15s,box-shadow .15s;
+}
+.btn-book:hover{filter:brightness(1.06);box-shadow:0 4px 12px rgba(255,56,92,.35)}
+
+/* ============================================================
+   BOOKING CONFIRMATION
+   ============================================================ */
+.invoice-wrap{max-width:1040px}
+.success{text-align:center;padding:40px 0 8px}
+.check-circle{
+  width:64px;height:64px;border-radius:50%;margin:0 auto 18px;
+  background:var(--red-grad);color:#fff;display:grid;place-items:center;
+  box-shadow:0 10px 26px -10px rgba(255,56,92,.75);
+  animation:pop .5s cubic-bezier(.2,1.4,.5,1) both;
+}
+@keyframes pop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+.success h1{font-size:clamp(26px,3.6vw,34px);font-weight:700;letter-spacing:-.03em}
+.success p{color:var(--muted);margin-top:8px;font-size:14.5px}
+
+.confirm-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:24px;align-items:start;margin-top:34px}
+
+.invoice-card{border:1px solid var(--line-soft);border-radius:var(--r-lg);overflow:hidden;background:#fff;box-shadow:var(--shadow-pill)}
+.invoice-head{
+  display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;
+  padding:22px 26px;border-bottom:1px solid var(--line-soft);background:var(--soft);
+}
+.invoice-head h3{font-size:16px;font-weight:600}
+.invoice-head small{display:block;font-size:12.5px;color:var(--muted);font-weight:400;margin-top:2px}
+.invoice-no{font-size:12.5px;font-weight:600;color:var(--red);letter-spacing:.06em;text-transform:uppercase}
+.inv-rows{padding:6px 26px}
+.inv-rows > div{display:flex;justify-content:space-between;align-items:baseline;gap:18px;padding:13px 0;border-bottom:1px solid var(--line-soft)}
+.inv-rows > div:last-child{border-bottom:0}
+.inv-rows dt{color:var(--muted);font-size:14px}
+.inv-rows dd{margin:0;font-weight:600;font-size:14px;text-align:right}
+.inv-total{
+  margin:0 26px;padding:18px 0;border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+}
+.inv-total dt{font-size:15px;font-weight:600}
+.inv-total dd{margin:0;font-size:24px;font-weight:700;letter-spacing:-.02em}
+.invoice-foot{padding:0 26px 26px}
+
+.side-col{display:flex;flex-direction:column;gap:16px}
+.thanks-card{background:var(--soft);border-radius:var(--r-lg);padding:26px 24px}
+.thanks-icons{display:flex;gap:10px;margin-bottom:16px}
+.icon-circle{
+  width:40px;height:40px;border-radius:50%;background:#fff;color:var(--red);
+  display:grid;place-items:center;box-shadow:var(--shadow-pill);
+}
+.thanks-card h3{font-size:16px;font-weight:600;letter-spacing:-.01em}
+.thanks-card p{font-size:14px;color:var(--muted);margin-top:8px}
+.karibu{display:inline-block;margin-top:16px;font-size:15px;font-weight:600;color:var(--red)}
+
+.impact-line{
+  display:flex;align-items:center;gap:10px;
+  background:#fff8f9;border:1px solid #ffd9df;border-radius:var(--r-card);
+  padding:14px 16px;font-size:13.5px;font-weight:600;
+}
+.impact-line .ic{color:var(--red);fill:var(--red);stroke:none}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.site-footer{background:var(--soft);border-top:1px solid var(--line-soft);margin-top:56px}
+.footer-grid{
+  display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px;
+  padding:48px 0 36px;
+}
+.footer-brand .logo-name{font-size:19px}
+.footer-tagline{font-size:14px;font-weight:600;color:var(--red);margin-top:6px}
+.footer-note{font-size:13.5px;color:var(--muted);margin-top:12px;max-width:44ch;line-height:1.6}
+.footer-col h5{font-size:13px;font-weight:600;margin-bottom:12px}
+.footer-col a{display:block;font-size:13.5px;color:var(--muted);padding:5px 0;transition:color .15s}
+.footer-col a:hover{color:var(--ink);text-decoration:underline}
+.footer-bottom{
+  display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  padding:18px 0 26px;border-top:1px solid var(--line-soft);
+  font-size:13px;color:var(--muted);
+}
+
+/* ============================================================
+   DEMO MODE RIBBON + SCREEN SWITCHER
+   ============================================================ */
+.demo-bar{
+  position:fixed;left:18px;bottom:18px;z-index:300;
+  display:flex;align-items:center;gap:8px;
+  background:#fff;border:1px solid var(--line);border-radius:var(--r-pill);
+  padding:9px 16px;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  box-shadow:0 6px 20px rgba(0,0,0,.14);
+}
+.demo-dot{width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 0 3px rgba(255,56,92,.18)}
+
+.screen-nav{
+  position:fixed;right:18px;bottom:18px;z-index:300;
+  display:flex;gap:3px;background:#fff;border:1px solid var(--line);
+  border-radius:var(--r-pill);padding:4px;box-shadow:0 6px 20px rgba(0,0,0,.14);
+}
+.screen-nav button{
+  width:30px;height:30px;border:0;border-radius:50%;background:transparent;
+  color:var(--muted);font-size:12px;font-weight:700;cursor:pointer;
+  transition:background .15s,color .15s;
+}
+.screen-nav button:hover{background:var(--soft);color:var(--ink)}
+.screen-nav button.is-active{background:var(--red);color:#fff}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media(max-width:1080px){
+  .dest-grid{grid-template-columns:repeat(2,1fr)}
+  .county-grid{grid-template-columns:repeat(2,1fr)}
+  .footer-grid{grid-template-columns:1.4fr 1fr 1fr}
+  .footer-col:last-child{grid-column:1/-1}
+}
+@media(max-width:980px){
+  .main-nav{display:none}
+  .host-link{display:none}
+  .list-layout{grid-template-columns:1fr;gap:22px}
+  .filters{display:grid;grid-template-columns:repeat(3,1fr);gap:0 24px;padding-bottom:20px}
+  .filter-group{border-bottom:0;margin-bottom:0;padding-bottom:0}
+  .confirm-grid{grid-template-columns:1fr}
+}
+@media(max-width:760px){
+  .wrap{padding:0 18px}
+  .header-bar{padding:0 18px;min-height:66px}
+  .logo-tag{display:none}
+  .search-row{padding:2px 18px 12px}
+  .searchbar{height:56px}
+  .search-seg{height:44px;padding:0 16px}
+  .search-seg:nth-child(2),.search-seg:nth-child(3){display:none}
+  .search-orb{width:42px;height:42px}
+  .cat-track{padding:12px 18px 8px}
+  .hero{min-height:400px;border-radius:18px}
+  .hero-content{padding:28px}
+  .hero p{font-size:14.5px}
+  .section{padding:36px 0}
+  .section-head h2{font-size:20px}
+  .dest-grid{gap:14px}
+  .county-grid{gap:14px}
+  .results-grid{grid-template-columns:1fr;gap:24px}
+  .filters{grid-template-columns:1fr;gap:0}
+  .filter-group{border-bottom:1px solid var(--line-soft);margin-bottom:16px;padding-bottom:16px}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:28px;padding:36px 0 28px}
+  .footer-brand{grid-column:1/-1}
+  .dest-hero{min-height:280px;border-radius:18px}
+  .dest-hero-content{padding:24px}
+  .invoice-head,.inv-rows,.inv-total,.invoice-foot{padding-left:20px;padding-right:20px}
+  .inv-total{margin-left:20px;margin-right:20px}
+}
+@media(max-width:420px){
+  .demo-bar{left:12px;bottom:12px;padding:8px 12px;font-size:10px;letter-spacing:.06em}
+  .screen-nav{right:12px;bottom:12px}
+  .screen-nav button{width:26px;height:26px;font-size:11px}
+  .dest-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body data-screen="landing">
+
+<!-- ICON SPRITE -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20.3S4.8 15.8 4.8 10.2A4.2 4.2 0 0 1 12 7.4a4.2 4.2 0 0 1 7.2 2.8c0 5.6-7.2 10.1-7.2 10.1Z"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9Z"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.4 3.8 5.5 3.8 9S14.5 18.6 12 21c-2.5-2.4-3.8-5.5-3.8-9S9.5 5.4 12 3Z"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.5"/><path d="M4.5 20c.6-3.6 3.7-5.5 7.5-5.5s6.9 1.9 7.5 5.5"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11"/><path d="m7.5 11 4.5 4.5L16.5 11"/><path d="M4.5 19.5h15"/></symbol>
+  <symbol id="i-chev-left" viewBox="0 0 24 24"><path d="M14.5 5.5 8 12l6.5 6.5"/></symbol>
+  <symbol id="i-chev-right" viewBox="0 0 24 24"><path d="M9.5 5.5 16 12l-6.5 6.5"/></symbol>
+  <symbol id="i-house" viewBox="0 0 24 24"><path d="M3.5 11 12 3.5 20.5 11"/><path d="M5.5 9.8V20h13V9.8"/><path d="M10 20v-5.5h4V20"/></symbol>
+  <symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 21c3.6 0 5.8-2.4 5.8-5.6 0-3.6-2.8-5.4-3.8-9.4-1 2.8-2.8 3.9-2.8 6.4-1-.8-1.6-1.8-2-3-1 1.8-3 3.6-3 6 0 3.2 2.2 5.6 5.8 5.6Z"/></symbol>
+  <symbol id="i-bed" viewBox="0 0 24 24"><path d="M3 19v-7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v7"/><path d="M3 15h18"/><path d="M7 10V7.5h5V10"/></symbol>
+  <symbol id="i-building" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="16" rx="1.5"/><path d="M9 8h2M13 8h2M9 12h2M13 12h2M9 16h2M13 16h2"/></symbol>
+  <symbol id="i-cabin" viewBox="0 0 24 24"><path d="m3.5 20 8.5-14 8.5 14Z"/><path d="M9 20v-4.5h6V20"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="9" r="3.2"/><path d="M3 19c.5-3 3-4.7 6-4.7s5.5 1.7 6 4.7"/><path d="M16 6.2a3 3 0 0 1 0 5.6"/><path d="M17.5 14.6c2 .5 3.3 2 3.7 4.4"/></symbol>
+  <symbol id="i-mountain" viewBox="0 0 24 24"><path d="M2.5 19 9 7l3.4 5.8L14.5 10l7 9Z"/><path d="m7.2 10.6 1.8 2.8 1.5-1.1"/></symbol>
+  <symbol id="i-palm" viewBox="0 0 24 24"><path d="M12 21V11"/><path d="M12 11c-2.6-2.2-5-2-6.6 0M12 11c2.6-2.2 5-2 6.6 0M12 11c-1.4-3-.8-5.4 1-7M12 11c1.4-3 .8-5.4-1-7"/></symbol>
+  <symbol id="i-dune" viewBox="0 0 24 24"><path d="M2.5 18c3.6 0 5.2-4 8.3-4 3 0 4.7 4 10.7 4"/><path d="M14.5 12.6c1.7-1 3.1-.7 4.3.4"/></symbol>
+  <symbol id="i-camel" viewBox="0 0 24 24"><path d="M3 16.6c0-1.9 1.5-3.4 3.4-3.4h.8c.5 0 1-.2 1.3-.6l1.6-2.3"/><path d="M10.1 10.3c.4-.6 1.1-1 1.9-1 .9 0 1.6.4 1.9 1.1.3.6.9 1 1.6 1h.6c1.9 0 3.4 1.5 3.4 3.4"/><path d="M19.5 14.8c0-1.1.5-1.9 1.2-2.5"/><path d="M3.5 16.6V20M7.2 16.6V20M15.2 16.6V20M19.2 16.6V20"/></symbol>
+  <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3.5c3 3.4 5 6.1 5 8.6a5 5 0 0 1-10 0c0-2.5 2-5.2 5-8.6Z"/></symbol>
+</svg>
+
+<header class="site-header is-compact" id="siteHeader">
+  <div class="header-bar">
+    <a class="logo" href="#" data-go="landing">
+      <svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+        <path d="M16 28.5S4.5 21 4.5 12.2C4.5 8 7.8 4.5 11.7 4.5c1.8 0 3.4.9 4.3 2.3.9-1.4 2.5-2.3 4.3-2.3 3.9 0 7.2 3.5 7.2 7.7C27.5 21 16 28.5 16 28.5Z" fill="#ff385c"/>
+      </svg>
+      <span class="logo-text">
+        <span class="logo-name">Chalbi</span>
+        <span class="logo-tag">Travel that delivers care.</span>
+      </span>
+    </a>
+
+    <nav class="main-nav" aria-label="Primary">
+      <a href="#" data-go="landing" class="is-active">Stays</a>
+      <a href="#" data-go="landing">Our Impact</a>
+    </nav>
+
+    <div class="header-right">
+      <a class="host-link" href="#">List your property</a>
+      <button class="icon-round" type="button" aria-label="Language and currency">
+        <svg class="ic"><use href="#i-globe"/></svg>
+      </button>
+      <a class="signin" href="#" data-go="landing">Sign in</a>
+      <button class="profile-pill" type="button" aria-label="Menu and profile">
+        <svg class="ic" style="width:16px;height:16px"><use href="#i-menu"/></svg>
+        <span class="avatar"><svg class="ic" style="width:18px;height:18px"><use href="#i-user"/></svg></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="search-row">
+    <div class="searchbar" role="search" aria-label="Search stays (demo)">
+      <button class="search-seg" type="button">
+        <span class="search-lbl">Where</span>
+        <span class="search-val" data-search="where">Search destinations</span>
+      </button>
+      <button class="search-seg" type="button">
+        <span class="search-lbl">Check in</span>
+        <span class="search-val">Add dates</span>
+      </button>
+      <button class="search-seg" type="button">
+        <span class="search-lbl">Check out</span>
+        <span class="search-val">Add dates</span>
+      </button>
+      <button class="search-seg" type="button">
+        <span class="search-lbl">Who</span>
+        <span class="search-val">Add guests</span>
+      </button>
+      <button class="search-orb" type="button" aria-label="Search" data-go="marsabit">
+        <svg class="ic"><use href="#i-search"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="category-strip">
+    <div class="cat-track" role="tablist" aria-label="Categories">
+      <button class="cat is-active" type="button" role="tab" aria-selected="true"><svg class="ic"><use href="#i-house"/></svg>All</button>
+      <button class="cat" type="button"><svg class="ic"><use href="#i-flame"/></svg>Trending</button>
+      <button class="cat" type="button"><svg class="ic"><use href="#i-bed"/></svg>Lodges</button>
+      <button class="cat" type="button"><svg class="ic"><use href="#i-building"/></svg>Guesthouses</button>
+      <button class="cat" type="button"><svg class="ic"><use href="#i-cabin"/></svg>Bandas</button>
+      <button class="cat" type="button"><svg class="ic"><use href="#i-house"/></svg>Homestays</button>
+      <button class="cat" type="button"><svg class="ic"><use href="#i-sun"/></svg>Desert stays</button>
+      <button class="cat" type="button"><svg class="ic"><use href="#i-users"/></svg>Family</button>
+      <button class="cat" type="button"><svg class="ic"><use href="#i-mountain"/></svg>Saku</button>
+      <button class="cat" type="button"><svg class="ic"><use href="#i-dune"/></svg>North Horr</button>
+      <button class="cat" type="button"><svg class="ic"><use href="#i-palm"/></svg>Laisamis</button>
+      <button class="cat" type="button"><svg class="ic"><use href="#i-camel"/></svg>Moyale</button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- SCREEN 1 — LANDING -->
+<section class="screen is-active" id="landing">
+  <div class="wrap">
+    <div class="hero">
+      <div class="hero-media photo hero-photo" aria-hidden="true"></div>
+      <div class="hero-scrim" aria-hidden="true"></div>
+      <div class="hero-content">
+        <span class="hero-kicker">Marsabit County · Kenya</span>
+        <h1>Travel that delivers care.</h1>
+        <p>All 45 properties across Marsabit County, listed in one place. A share of every booking supports maternal waiting shelters in Kalacha and obstetric fistula surgeries.</p>
+        <button class="btn-light" type="button" data-go="marsabit">Explore Marsabit</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap section">
+    <div class="section-head">
+      <h2>Trending destinations</h2>
+      <a class="link-red" href="#" data-go="marsabit">See all</a>
+    </div>
+
+    <div class="dest-grid">
+      <a class="dest-card" href="#" data-go="marsabit">
+        <div class="dest-media">
+          <div class="photo v1"></div>
+          <span class="badge-red">Trending</span>
+        </div>
+        <h3>Marsabit</h3>
+        <p>45 properties</p>
+      </a>
+      <div class="dest-card is-muted">
+        <div class="dest-media"><div class="photo v4"></div></div>
+        <h3>Lake Turkana</h3>
+        <p>Placeholder</p>
+      </div>
+      <div class="dest-card is-muted">
+        <div class="dest-media"><div class="photo v6"></div></div>
+        <h3>Marsabit Culture</h3>
+        <p>Placeholder</p>
+      </div>
+      <div class="dest-card is-muted">
+        <div class="dest-media"><div class="photo v14"></div></div>
+        <h3>Chalbi Dunes</h3>
+        <p>Placeholder</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap" style="padding-bottom:8px">
+    <div class="impact-banner">
+      <div class="impact-icon" aria-hidden="true">
+        <svg class="ic"><use href="#i-heart"/></svg>
+      </div>
+      <div>
+        <h3>Every stay supports maternal waiting shelters in Kalacha and obstetric fistula surgeries.</h3>
+        <p>A share of every booking made on Chalbi is directed to maternal health across Marsabit County.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCREEN 2 — MARSABIT -->
+<section class="screen" id="marsabit">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="#" data-go="landing">Chalbi</a>
+      <span class="sep">/</span>
+      <span>Marsabit</span>
+    </nav>
+
+    <div class="dest-hero">
+      <div class="hero-media photo hero-photo" aria-hidden="true"></div>
+      <div class="hero-scrim" aria-hidden="true"></div>
+      <div class="dest-hero-content">
+        <h1>Marsabit</h1>
+        <p>45 properties · Saku, North Horr, Laisamis, Moyale</p>
+      </div>
+    </div>
+
+    <div class="writeup">
+      <span class="eyebrow">About the destination</span>
+      <p>[Destination write-up goes here]</p>
+    </div>
+
+    <div class="section-head" style="margin-top:44px">
+      <h2>Explore by sub-county</h2>
+    </div>
+
+    <div class="county-grid">
+      <a class="county-card" href="#" data-go="list">
+        <div class="county-media">
+          <div class="photo v5"></div>
+          <span class="county-icon"><svg class="ic"><use href="#i-mountain"/></svg></span>
+        </div>
+        <div class="county-body">
+          <h3>Saku</h3>
+          <p>18 properties</p>
+          <span class="county-btn">View properties</span>
+        </div>
+      </a>
+
+      <a class="county-card" href="#" data-go="list">
+        <div class="county-media">
+          <div class="photo v12"></div>
+          <span class="county-icon"><svg class="ic"><use href="#i-dune"/></svg></span>
+        </div>
+        <div class="county-body">
+          <h3>North Horr</h3>
+          <p>9 properties</p>
+          <span class="county-btn">View properties</span>
+        </div>
+      </a>
+
+      <a class="county-card" href="#" data-go="list">
+        <div class="county-media">
+          <div class="photo v15"></div>
+          <span class="county-icon"><svg class="ic"><use href="#i-palm"/></svg></span>
+        </div>
+        <div class="county-body">
+          <h3>Laisamis</h3>
+          <p>7 properties</p>
+          <span class="county-btn">View properties</span>
+        </div>
+      </a>
+
+      <a class="county-card" href="#" data-go="list">
+        <div class="county-media">
+          <div class="photo v13"></div>
+          <span class="county-icon"><svg class="ic"><use href="#i-camel"/></svg></span>
+        </div>
+        <div class="county-body">
+          <h3>Moyale</h3>
+          <p>11 properties</p>
+          <span class="county-btn">View properties</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="impact-mini">
+      <div class="impact-icon" aria-hidden="true">
+        <svg class="ic"><use href="#i-heart"/></svg>
+      </div>
+      <div>
+        <h4>Your stay makes an impact</h4>
+        <p>A share of every booking in Marsabit County funds the maternal waiting shelters in Kalacha and obstetric fistula surgeries across the county.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCREEN 3 — SAKU PROPERTY LIST -->
+<section class="screen" id="list">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="#" data-go="landing">Chalbi</a>
+      <span class="sep">/</span>
+      <a href="#" data-go="marsabit">Marsabit</a>
+      <span class="sep">/</span>
+      <span>Saku</span>
+    </nav>
+
+    <div class="list-head">
+      <div>
+        <h1>45 properties in Saku</h1>
+        <p>List supplied per sub-county · Prices per night</p>
+      </div>
+    </div>
+
+    <div class="list-layout">
+      <aside class="filters" aria-label="Filters">
+        <div class="filter-group">
+          <h4>Price per night</h4>
+          <label class="check"><input type="checkbox"><span>Under KES 4,000</span></label>
+          <label class="check"><input type="checkbox" checked><span>KES 4,000 – 8,000</span></label>
+          <label class="check"><input type="checkbox"><span>KES 8,000 +</span></label>
+        </div>
+        <div class="filter-group">
+          <h4>Rating</h4>
+          <label class="check"><input type="checkbox"><span>4.9 and above</span></label>
+          <label class="check"><input type="checkbox" checked><span>4.7 and above</span></label>
+          <label class="check"><input type="checkbox"><span>4.5 and above</span></label>
+        </div>
+        <div class="filter-group">
+          <h4>Property type</h4>
+          <label class="check"><input type="checkbox"><span>Lodges</span></label>
+          <label class="check"><input type="checkbox"><span>Guesthouses</span></label>
+          <label class="check"><input type="checkbox"><span>Bandas</span></label>
+          <label class="check"><input type="checkbox"><span>Homestays</span></label>
+        </div>
+      </aside>
+
+      <div class="results">
+        <div class="results-grid">
+          <!-- Property 1 -->
+          <article class="listing" data-go="invoice">
+            <div class="listing-media">
+              <div class="carousel">
+                <div class="photo v11"></div>
+                <div class="photo v10"></div>
+                <div class="photo v19"></div>
+              </div>
+              <span class="guest-badge">Guest favorite</span>
+              <button class="heart-btn" type="button" aria-label="Save property">
+                <svg class="ic"><use href="#i-heart"/></svg>
+              </button>
+              <button class="car-arrow prev" type="button" aria-label="Previous photo"><svg class="ic" style="width:16px;height:16px"><use href="#i-chev-left"/></svg></button>
+              <button class="car-arrow next" type="button" aria-label="Next photo"><svg class="ic" style="width:16px;height:16px"><use href="#i-chev-right"/></svg></button>
+              <div class="dots">
+                <button class="dot is-active" type="button" aria-label="Photo 1"></button>
+                <button class="dot" type="button" aria-label="Photo 2"></button>
+                <button class="dot" type="button" aria-label="Photo 3"></button>
+              </div>
+            </div>
+            <div class="listing-info">
+              <div class="listing-title-row">
+                <h3 class="listing-title">Property Name 1</h3>
+                <span class="listing-rating"><svg class="ic ic-fill"><use href="#i-star"/></svg>4.92</span>
+              </div>
+              <p class="listing-loc">Saku, Marsabit</p>
+              <p class="listing-meta">2 beds · 1 bath · 124 reviews</p>
+              <span class="badge-care"><svg class="ic"><use href="#i-heart"/></svg>Supports maternal health</span>
+              <div class="listing-foot">
+                <p class="price"><strong>KES 4,500</strong> <span>night</span></p>
+                <button class="btn-book" type="button" data-go="invoice">Book now</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Property 2 -->
+          <article class="listing" data-go="invoice">
+            <div class="listing-media">
+              <div class="carousel">
+                <div class="photo v21"></div>
+                <div class="photo v20"></div>
+                <div class="photo v24"></div>
+              </div>
+              <span class="guest-badge">Guest favorite</span>
+              <button class="heart-btn" type="button" aria-label="Save property">
+                <svg class="ic"><use href="#i-heart"/></svg>
+              </button>
+              <button class="car-arrow prev" type="button" aria-label="Previous photo"><svg class="ic" style="width:16px;height:16px"><use href="#i-chev-left"/></svg></button>
+              <button class="car-arrow next" type="button" aria-label="Next photo"><svg class="ic" style="width:16px;height:16px"><use href="#i-chev-right"/></svg></button>
+              <div class="dots">
+                <button class="dot is-active" type="button" aria-label="Photo 1"></button>
+                <button class="dot" type="button" aria-label="Photo 2"></button>
+                <button class="dot" type="button" aria-label="Photo 3"></button>
+              </div>
+            </div>
+            <div class="listing-info">
+              <div class="listing-title-row">
+                <h3 class="listing-title">Property Name 2</h3>
+                <span class="listing-rating"><svg class="ic ic-fill"><use href="#i-star"/></svg>4.85</span>
+              </div>
+              <p class="listing-loc">Saku, Marsabit</p>
+              <p class="listing-meta">3 beds · 2 baths · 88 reviews</p>
+              <span class="badge-care"><svg class="ic"><use href="#i-heart"/></svg>Supports maternal health</span>
+              <div class="listing-foot">
+                <p class="price"><strong>KES 6,200</strong> <span>night</span></p>
+                <button class="btn-book" type="button" data-go="invoice">Book now</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Property 3 -->
+          <article class="listing" data-go="invoice">
+            <div class="listing-media">
+              <div class="carousel">
+                <div class="photo v17"></div>
+                <div class="photo v22"></div>
+                <div class="photo v25"></div>
+              </div>
+              <span class="guest-badge">Guest favorite</span>
+              <button class="heart-btn" type="button" aria-label="Save property">
+                <svg class="ic"><use href="#i-heart"/></svg>
+              </button>
+              <button class="car-arrow prev" type="button" aria-label="Previous photo"><svg class="ic" style="width:16px;height:16px"><use href="#i-chev-left"/></svg></button>
+              <button class="car-arrow next" type="button" aria-label="Next photo"><svg class="ic" style="width:16px;height:16px"><use href="#i-chev-right"/></svg></button>
+              <div class="dots">
+                <button class="dot is-active" type="button" aria-label="Photo 1"></button>
+                <button class="dot" type="button" aria-label="Photo 2"></button>
+                <button class="dot" type="button" aria-label="Photo 3"></button>
+              </div>
+            </div>
+            <div class="listing-info">
+              <div class="listing-title-row">
+                <h3 class="listing-title">Property Name 3</h3>
+                <span class="listing-rating"><svg class="ic ic-fill"><use href="#i-star"/></svg>4.78</span>
+              </div>
+              <p class="listing-loc">Saku, Marsabit</p>
+              <p class="listing-meta">1 bed · 1 bath · 61 reviews</p>
+              <span class="badge-care"><svg class="ic"><use href="#i-heart"/></svg>Supports maternal health</span>
+              <div class="listing-foot">
+                <p class="price"><strong>KES 3,800</strong> <span>night</span></p>
+                <button class="btn-book" type="button" data-go="invoice">Book now</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Property 4 -->
+          <article class="listing" data-go="invoice">
+            <div class="listing-media">
+              <div class="carousel">
+                <div class="photo v23"></div>
+                <div class="photo v18"></div>
+                <div class="photo v13"></div>
+              </div>
+              <span class="guest-badge">Guest favorite</span>
+              <button class="heart-btn" type="button" aria-label="Save property">
+                <svg class="ic"><use href="#i-heart"/></svg>
+              </button>
+              <button class="car-arrow prev" type="button" aria-label="Previous photo"><svg class="ic" style="width:16px;height:16px"><use href="#i-chev-left"/></svg></button>
+              <button class="car-arrow next" type="button" aria-label="Next photo"><svg class="ic" style="width:16px;height:16px"><use href="#i-chev-right"/></svg></button>
+              <div class="dots">
+                <button class="dot is-active" type="button" aria-label="Photo 1"></button>
+                <button class="dot" type="button" aria-label="Photo 2"></button>
+                <button class="dot" type="button" aria-label="Photo 3"></button>
+              </div>
+            </div>
+            <div class="listing-info">
+              <div class="listing-title-row">
+                <h3 class="listing-title">Property Name 4</h3>
+                <span class="listing-rating"><svg class="ic ic-fill"><use href="#i-star"/></svg>4.95</span>
+              </div>
+              <p class="listing-loc">Saku, Marsabit</p>
+              <p class="listing-meta">2 beds · 2 baths · 142 reviews</p>
+              <span class="badge-care"><svg class="ic"><use href="#i-heart"/></svg>Supports maternal health</span>
+              <div class="listing-foot">
+                <p class="price"><strong>KES 7,400</strong> <span>night</span></p>
+                <button class="btn-book" type="button" data-go="invoice">Book now</button>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCREEN 4 — BOOKING CONFIRMATION -->
+<section class="screen" id="invoice">
+  <div class="wrap invoice-wrap">
+    <div class="success">
+      <div class="check-circle" aria-hidden="true">
+        <svg class="ic" style="width:30px;height:30px;stroke-width:2.6"><use href="#i-check"/></svg>
+      </div>
+      <h1>Booking confirmed</h1>
+      <p>Invoice No. CHB-2025-0417 has been issued to Guest Name.</p>
+    </div>
+
+    <div class="confirm-grid">
+      <div class="invoice-card">
+        <div class="invoice-head">
+          <div>
+            <h3>Invoice</h3>
+            <small>Issued by Chalbi · Marsabit County</small>
+          </div>
+          <span class="invoice-no">CHB-2025-0417</span>
+        </div>
+
+        <dl class="inv-rows">
+          <div><dt>Invoice no.</dt><dd>CHB-2025-0417</dd></div>
+          <div><dt>Guest name</dt><dd>Guest Name</dd></div>
+          <div><dt>Property</dt><dd>Property Name 1</dd></div>
+          <div><dt>Sub-county</dt><dd>Saku, Marsabit</dd></div>
+          <div><dt>Dates</dt><dd>12 – 15 Jun 2025</dd></div>
+          <div><dt>Nights</dt><dd>3</dd></div>
+        </dl>
+
+        <div class="inv-total">
+          <dt>Total</dt>
+          <dd>KES 13,500</dd>
+        </div>
+
+        <div class="invoice-foot">
+          <button class="btn-red" type="button" style="width:100%">
+            <svg class="ic" style="width:17px;height:17px"><use href="#i-download"/></svg>
+            Download invoice
+          </button>
+        </div>
+      </div>
+
+      <div class="side-col">
+        <div class="thanks-card">
+          <div class="thanks-icons" aria-hidden="true">
+            <span class="icon-circle"><svg class="ic"><use href="#i-palm"/></svg></span>
+            <span class="icon-circle"><svg class="ic"><use href="#i-drop"/></svg></span>
+          </div>
+          <h3>Thank you for booking with Chalbi</h3>
+          <p>Your stay directly supports the maternal waiting shelters in Kalacha and obstetric fistula surgeries across Marsabit County.</p>
+          <span class="karibu">Karibu tena.</span>
+        </div>
+
+        <div class="impact-line">
+          <svg class="ic"><use href="#i-heart"/></svg>
+          <span>KES 675 from your booking goes to maternal health.</span>
+        </div>
+
+        <a class="btn-ghost" href="#" data-go="landing" style="width:100%">Back to Chalbi</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="logo-name">Chalbi</span>
+        <p class="footer-tagline">Travel that delivers care.</p>
+        <p class="footer-note">A social enterprise listing all 45 properties in Marsabit County in one place. A share of every booking supports maternal waiting shelters in Kalacha and obstetric fistula surgeries.</p>
+      </div>
+
+      <div class="footer-col">
+        <h5>Explore</h5>
+        <a href="#" data-go="landing">Stays</a>
+        <a href="#" data-go="marsabit">Marsabit</a>
+        <a href="#" data-go="list">Saku</a>
+        <a href="#" data-go="invoice">Booking confirmation</a>
+      </div>
+
+      <div class="footer-col">
+        <h5>Chalbi</h5>
+        <a href="#">Our Impact</a>
+        <a href="#">List your property</a>
+        <a href="#">Contact</a>
+      </div>
+
+      <div class="footer-col">
+        <h5>Support</h5>
+        <a href="#">Help centre</a>
+        <a href="#">Cancellation options</a>
+        <a href="#">Safety information</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2025 Chalbi · Design mockup — placeholder data only.</span>
+      <span>Travel that delivers care.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="demo-bar" role="note">
+  <span class="demo-dot" aria-hidden="true"></span>
+  Demo mode
+</div>
+
+<nav class="screen-nav" aria-label="Screen switcher (demo)">
+  <button type="button" data-screen="landing" class="is-active" aria-label="Screen 1: Landing">1</button>
+  <button type="button" data-screen="marsabit" aria-label="Screen 2: Marsabit">2</button>
+  <button type="button" data-screen="list" aria-label="Screen 3: Sub-county list">3</button>
+  <button type="button" data-screen="invoice" aria-label="Screen 4: Booking confirmation">4</button>
+</nav>
+
+<script>
+(function () {
+  var SCREENS = ['landing', 'marsabit', 'list', 'invoice'];
+  var header = document.getElementById('siteHeader');
+  var current = 'landing';
+
+  function setScreen(id) {
+    if (SCREENS.indexOf(id) === -1) return;
+    current = id;
+    document.body.dataset.screen = id;
+
+    document.querySelectorAll('.screen').forEach(function (s) {
+      s.classList.toggle('is-active', s.id === id);
+    });
+    document.querySelectorAll('.screen-nav button').forEach(function (b) {
+      b.classList.toggle('is-active', b.dataset.screen === id);
+    });
+
+    var where = document.querySelector('[data-search="where"]');
+    if (where) {
+      where.textContent = id === 'landing' ? 'Search destinations'
+                        : id === 'list'    ? 'Saku'
+                        : 'Marsabit';
+    }
+
+    updateHeader();
+    window.scrollTo(0, 0);
+  }
+
+  function updateHeader() {
+    var compact = current !== 'landing' || window.scrollY > 24;
+    header.classList.toggle('is-compact', compact);
+  }
+
+  window.addEventListener('scroll', updateHeader, { passive: true });
+
+  document.querySelectorAll('.listing-media').forEach(function (media) {
+    var track = media.querySelector('.carousel');
+    var dots = Array.prototype.slice.call(media.querySelectorAll('.dot'));
+    if (!track) return;
+
+    function setActive() {
+      var i = Math.round(track.scrollLeft / track.clientWidth);
+      dots.forEach(function (d, j) {
+        d.classList.toggle('is-active', j === i);
+      });
+    }
+
+    track.addEventListener('scroll', function () {
+      window.requestAnimationFrame(setActive);
+    }, { passive: true });
+
+    var prev = media.querySelector('.car-arrow.prev');
+    var next = media.querySelector('.car-arrow.next');
+
+    if (prev) prev.addEventListener('click', function (e) {
+      e.stopPropagation();
+      track.scrollBy({ left: -track.clientWidth, behavior: 'smooth' });
+    });
+
+    if (next) next.addEventListener('click', function (e) {
+      e.stopPropagation();
+      track.scrollBy({ left: track.clientWidth, behavior: 'smooth' });
+    });
+
+    dots.forEach(function (d, j) {
+      d.addEventListener('click', function (e) {
+        e.stopPropagation();
+        track.scrollTo({ left: j * track.clientWidth, behavior: 'smooth' });
+      });
+    });
+  });
+
+  document.querySelectorAll('.heart-btn').forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      e.preventDefault();
+      btn.classList.toggle('is-saved');
+      btn.setAttribute('aria-label',
+        btn.classList.contains('is-saved') ? 'Remove from saved' : 'Save property');
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    var go = e.target.closest('[data-go]');
+    if (go) {
+      e.preventDefault();
+      setScreen(go.dataset.go);
+      return;
+    }
+
+    var jump = e.target.closest('[data-screen]');
+    if (jump) {
+      e.preventDefault();
+      setScreen(jump.dataset.screen);
+      return;
+    }
+
+    var dead = e.target.closest('a[href="#"]');
+    if (dead) e.preventDefault();
+  });
+
+  document.querySelectorAll('.cat').forEach(function (cat) {
+    cat.addEventListener('click', function () {
+      document.querySelectorAll('.cat').forEach(function (c) {
+        c.classList.remove('is-active');
+        c.setAttribute('aria-selected', 'false');
+      });
+      cat.classList.add('is-active');
+      cat.setAttribute('aria-selected', 'true');
+    });
+  });
+
+  updateHeader();
+})();
+</script>
+</body>
+</html>
